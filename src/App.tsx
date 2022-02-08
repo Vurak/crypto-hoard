@@ -4,7 +4,7 @@ import Landing from "./views/Landing";
 
 function App() {
   return (
-    <div className="w-screen h-screen bg-zinc-900 content-center flex font-mono font-bold">
+    <div className="flex content-center w-screen h-screen font-mono font-bold bg-zinc-900">
       <Landing />
     </div>
   );
