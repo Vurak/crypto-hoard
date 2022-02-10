@@ -1,11 +1,17 @@
+import { WalletDisconnectButton, WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useState } from "react";
 import { Button, Input } from "../components";
 
 const Landing = () => {
   const [expandButton, setExpandButton] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
 
   const handleUnlockClick = () => {
     setExpandButton(true);
+  };
+
+  const handleSubmit = () => {
+    setUnlocked(true);
   };
 
   return (
@@ -20,9 +26,11 @@ const Landing = () => {
           <p className="m-auto p-2 text-center align-middle text-lg text-pink-500">
             Welcome to the Internet Merchant
           </p>
-          <Input placeholder="username" onChange={() => {}} />
+          {/* <Input placeholder="username" onChange={() => {}} />
           <Input placeholder="password" onChange={() => {}} />
-          <Button text="Submit" onClick={() => {}} />
+          <Button text="Submit" onClick={() => {}} /> */}
+          <WalletMultiButton />
+          <WalletDisconnectButton />
         </div>
       ) : (
         <Button onClick={handleUnlockClick} text="UNLOCK" />
