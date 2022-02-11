@@ -1,12 +1,12 @@
-import { Link } from "wouter";
 import "./App.css";
-import { SquareCryptoCard } from "./components";
 import Router from "./Router";
-import Landing from "./views/Landing";
-import { Wallet } from "./Wallet";
 
 function App() {
-  return <Router />;
+  return (
+    <div className="flex min-h-screen w-screen content-center bg-zinc-900 font-mono font-bold">
+      <Router />
+    </div>
+  );
 }
 
 export default App;

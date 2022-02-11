@@ -1,14 +1,21 @@
+import { lazy, Suspense } from "react";
 import { Link, Route } from "wouter";
-import { Landing, Solana } from "./views";
+import { Landing } from "./views";
+const Solana = lazy(() => import("./views/Solana"));
+const SolanaWallet = lazy(() => import("./components/solana/Wallet"));
 
 const Router = () => {
   return (
-    <div>
+    <Suspense fallback="Loading...">
       <Route path="/">
         <Landing />
       </Route>
-      <Route path="/solana" />
-    </div>
+      <Route path="/solana">
+        <SolanaWallet>
+          <Solana />
+        </SolanaWallet>
+      </Route>
+    </Suspense>
   );
 };
 
