@@ -39,20 +39,12 @@ const Solana = () => {
   }, [publicKey, connection]);
 
   return (
-    <div className="m-auto content-center">
-      {/* <Button
-      text="< BACK"
-      onClick={() => setExpandButton(false)}
-      className="absolute top-0 left-0 m-4"
-    /> */}
-      <div className="mx-auto my-5 flex flex-col gap-2 rounded-lg border-2 border-cyan-400 p-4">
-        <p className="m-auto p-2 text-center align-middle text-lg text-pink-500">
-          Welcome to the Internet Merchant
-        </p>
+    <div className="m-auto w-full content-center">
+      <div className="mx-auto my-5 flex flex-col gap-2 rounded-lg p-4 md:w-1/3">
         <Button text="RECEIVE" onClick={getAirdrop} />
         <Button text="SEND" onClick={sendRandom} />
-        <WalletMultiButton />
-        <WalletDisconnectButton />
+        <WalletMultiButton>CONNECT WALLET</WalletMultiButton>
+        <WalletDisconnectButton>DISCONNECT WALLET</WalletDisconnectButton>
       </div>
     </div>
   );
