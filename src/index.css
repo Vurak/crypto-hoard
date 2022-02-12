@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: Trade Winds;
+    src: url(./assets/fonts/TradeWinds-Regular.ttf);
+  }
+}

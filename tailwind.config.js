@@ -4,6 +4,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['Trade Winds']
+      },
       padding: {
         '1/3': '33.33%',
         '1/2': '50%',
@@ -18,6 +21,9 @@ module.exports = {
         primary: {
           light: '#310E56',
           dark: '#14052C',
+        },
+        gold: {
+          50: '#eab308'
         }
       }
     },

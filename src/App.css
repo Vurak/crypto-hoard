@@ -18,7 +18,7 @@
 } */
 
 .wallet-adapter-button.wallet-adapter-button-trigger {
-  @apply bg-primary-light w-full justify-center rounded-lg border-4 border-yellow-500 p-2 font-mono font-bold text-yellow-500 duration-75 hover:bg-purple-900;
+  @apply bg-primary-light border-gold-50 text-gold-50 w-full justify-center rounded-lg border-4 p-2 font-mono font-bold duration-75 hover:bg-purple-900;
 }
 
 .wallet-adapter-button {
