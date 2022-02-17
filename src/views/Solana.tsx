@@ -5,7 +5,7 @@ import {
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Button } from "../components";
 
 const Solana = () => {
@@ -35,16 +35,44 @@ const Solana = () => {
     let accounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
       programId: key,
     });
-    console.log(accounts);
+    // new PublicKey(account.data.parsed.info.mint)
+    const details = await Promise.all(
+      accounts.value.map((value) =>
+        fetch(
+          `https://public-api.solscan.io/account/${value.account.data.parsed.info.mint}`
+        ).then((res) => res.json())
+      )
+    );
+
+    console.log(details);
   }, [publicKey, connection]);
+
+  useEffect(() => {
+    if (!wallet?.adapter.connected) return;
+  }, [wallet]);
+
+  const handleClick = () => {
+    wallet?.adapter.connect();
+  };
 
   return (
     <div className="m-auto w-full content-center">
       <div className="mx-auto my-5 flex flex-col gap-2 rounded-lg p-4 md:w-1/3">
-        <Button text="RECEIVE" onClick={getAirdrop} />
-        <Button text="SEND" onClick={sendRandom} />
-        <WalletMultiButton>CONNECT WALLET</WalletMultiButton>
-        <WalletDisconnectButton>DISCONNECT WALLET</WalletDisconnectButton>
+        {/* {/* <Button text="RECEIVE" onClick={getAirdrop} /> */}
+        <Button text="SEND" onClick={handleClick} />
+        <div className="flex flex-row gap-2">
+          <WalletMultiButton>
+            {publicKey
+              ? `${publicKey.toBase58().substring(0, 4)}...${publicKey
+                  .toBase58()
+                  .substring(
+                    publicKey.toBase58().length - 4,
+                    publicKey.toBase58().length
+                  )}`
+              : "CONNECT WALLET"}
+          </WalletMultiButton>
+          <WalletDisconnectButton>DISCONNECT WALLET</WalletDisconnectButton>
+        </div>
       </div>
     </div>
   );

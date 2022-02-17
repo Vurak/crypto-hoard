@@ -10,7 +10,7 @@ export const Button = (props: ButtonProps) => {
   return (
     <button
       onClick={props.onClick}
-      className={`bg-primary-light border-gold-50 text-gold-50 w-full rounded-lg border-4 p-2 font-bold duration-150 hover:bg-purple-900 ${
+      className={`from-primary-light hover:bg-primary-accent w-full rounded-lg bg-gradient-to-tr p-2 font-bold text-white duration-150 ${
         props.className || ""
       }`}
     >

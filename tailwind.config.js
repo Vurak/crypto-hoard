@@ -19,8 +19,9 @@ module.exports = {
           1300: '#0F021B'
         },
         primary: {
-          light: '#310E56',
-          dark: '#14052C',
+          accent: '#2C3580',
+          light: '#181E51',
+          dark: '#0F0C1D',
         },
         gold: {
           50: '#eab308'
