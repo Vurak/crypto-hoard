@@ -8,11 +8,32 @@ import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../components";
 
+interface TokenInfo {
+  name: string;
+  symbol: string;
+  decimals: number;
+  tokenAuthority: string;
+  supply: string | number;
+  type: "nft";
+}
+interface TokenAccount {
+  lamports: number;
+  ownerProgram: string;
+  type: "token_account";
+  rentEpoch: number;
+  account: string;
+  tokenInfo: TokenInfo;
+  metadata?: any;
+  onchainMetadata?: any;
+}
+
 const Solana = () => {
   const { connection } = useConnection();
   const { publicKey, wallet } = useWallet();
-  const [assets, setAssets] = useState([]);
+
   const walletRef = useRef<HTMLDivElement>(null);
+
+  const [assets, setAssets] = useState<TokenAccount[]>([]);
 
   const getAirdrop = useCallback(async () => {
     if (!publicKey) throw new WalletNotConnectedError();
@@ -27,7 +48,7 @@ const Solana = () => {
     }
   }, []);
 
-  const sendRandom = useCallback(async () => {
+  const retrieveWalletTokens = useCallback(async () => {
     if (!publicKey) throw new WalletNotConnectedError();
     // let all_accounts = await connection.getAccountInfo(publicKey)
     // // This is my SAMO public account balance and address (https://solscan.io/address/ChvvafF1aLeGzBPGr6VKbtcw6fFE1iUYdSoZr6R4oUyD)
@@ -44,7 +65,11 @@ const Solana = () => {
           `https://public-api.solscan.io/account/${value.account.data.parsed.info.mint}`
         ).then((res) => res.json())
       )
-    );
+    ).then((tokens: TokenAccount[]) => {
+      setAssets(
+        tokens.filter((token: TokenAccount) => token.tokenInfo.type == "nft")
+      );
+    });
 
     console.log(details);
   }, [publicKey, connection]);
@@ -52,6 +77,7 @@ const Solana = () => {
   useEffect(() => {
     if (wallet?.adapter.connected) {
       walletRef.current?.classList.replace("-translate-y-1/2", "top-0");
+      retrieveWalletTokens();
       walletRef.current?.classList.remove("top-1/2");
     } else {
       walletRef.current?.classList.replace("top-0", "-translate-y-1/2");
@@ -81,7 +107,25 @@ const Solana = () => {
           ) : null}
         </div>
       </div>
-      {/* {wallet?.adapter.connected && <div className="h-96"></div>} */}
+      <div
+        className={`mt-16 flex w-full p-3 transition-opacity duration-200 ${
+          wallet?.adapter.connected ? "" : "opacity-0"
+        }`}
+      >
+        {assets.length &&
+          assets.map((asset) => (
+            <div
+              className="bg-primary-light rounded-lg text-white"
+              key={asset.account}
+            >
+              <img
+                src={asset.metadata.data.image}
+                className="max-h-72 rounded-t-lg"
+              ></img>
+              <div className="p-2">{asset.metadata.data.name}</div>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
