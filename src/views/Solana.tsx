@@ -5,12 +5,14 @@ import {
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../components";
 
 const Solana = () => {
   const { connection } = useConnection();
   const { publicKey, wallet } = useWallet();
+  const [assets, setAssets] = useState([]);
+  const walletRef = useRef<HTMLDivElement>(null);
 
   const getAirdrop = useCallback(async () => {
     if (!publicKey) throw new WalletNotConnectedError();
@@ -48,19 +50,22 @@ const Solana = () => {
   }, [publicKey, connection]);
 
   useEffect(() => {
-    if (!wallet?.adapter.connected) return;
-  }, [wallet]);
-
-  const handleClick = () => {
-    wallet?.adapter.connect();
-  };
+    if (wallet?.adapter.connected) {
+      walletRef.current?.classList.replace("-translate-y-1/2", "top-0");
+      walletRef.current?.classList.remove("top-1/2");
+    } else {
+      walletRef.current?.classList.replace("top-0", "-translate-y-1/2");
+      walletRef.current?.classList.add("top-1/2");
+    }
+  }, [wallet?.adapter.connected]);
 
   return (
-    <div className="m-auto w-full content-center">
-      <div className="mx-auto my-5 flex flex-col gap-2 rounded-lg p-4 md:w-1/3">
-        {/* {/* <Button text="RECEIVE" onClick={getAirdrop} /> */}
-        <Button text="SEND" onClick={handleClick} />
-        <div className="flex flex-row gap-2">
+    <div className="flex w-full flex-col content-center">
+      <div
+        ref={walletRef}
+        className={`absolute left-1/2 top-1/2 z-30 flex w-4/5 -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-lg p-2 transition-all duration-200 md:w-1/3`}
+      >
+        <div className="flex flex-col gap-2 md:flex-row">
           <WalletMultiButton>
             {publicKey
               ? `${publicKey.toBase58().substring(0, 4)}...${publicKey
@@ -71,9 +76,12 @@ const Solana = () => {
                   )}`
               : "CONNECT WALLET"}
           </WalletMultiButton>
-          <WalletDisconnectButton>DISCONNECT WALLET</WalletDisconnectButton>
+          {wallet?.adapter.connected ? (
+            <WalletDisconnectButton>DISCONNECT WALLET</WalletDisconnectButton>
+          ) : null}
         </div>
       </div>
+      {/* {wallet?.adapter.connected && <div className="h-96"></div>} */}
     </div>
   );
 };
