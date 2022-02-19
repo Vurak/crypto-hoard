@@ -4,7 +4,7 @@ import { Landing } from "./views";
 const Solana = lazy(() => import("./views/Solana"));
 const SolanaWallet = lazy(() => import("./components/solana/Wallet"));
 
-const Router = () => {
+const Wouter = () => {
   return (
     <Suspense fallback="Loading...">
       <Switch>
@@ -22,4 +22,4 @@ const Router = () => {
   );
 };
 
-export default Router;
+export default Wouter;

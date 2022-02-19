@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import "./App.css";
-import Router from "./Router";
+import Wouter from "./Wouter";
 
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
         {/* <div className="from-primary-accent absolute top-0 right-0 m-2 h-12 w-12 cursor-pointer rounded-full bg-gradient-to-tr"></div> */}
       </div>
       <div className="relative flex min-h-screen w-full">
-        <Router />
+        <Wouter />
       </div>
     </div>
   );
