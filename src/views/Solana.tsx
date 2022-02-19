@@ -7,6 +7,7 @@ import {
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../components";
+import Masonry from "react-masonry-css";
 
 interface TokenInfo {
   name: string;
@@ -34,6 +35,7 @@ const Solana = () => {
   const walletRef = useRef<HTMLDivElement>(null);
 
   const [assets, setAssets] = useState<TokenAccount[]>([]);
+  const [showAssets, setShowAssets] = useState<boolean>(false);
 
   const getAirdrop = useCallback(async () => {
     if (!publicKey) throw new WalletNotConnectedError();
@@ -83,6 +85,10 @@ const Solana = () => {
       walletRef.current?.classList.replace("top-0", "-translate-y-1/2");
       walletRef.current?.classList.add("top-1/2");
     }
+
+    setTimeout(() => {
+      setShowAssets(Boolean(wallet?.adapter.connected));
+    }, 200);
   }, [wallet?.adapter.connected]);
 
   return (
@@ -107,25 +113,26 @@ const Solana = () => {
           ) : null}
         </div>
       </div>
-      <div
-        className={`mt-16 flex w-full p-3 transition-opacity duration-200 ${
+      <Masonry
+        breakpointCols={6}
+        className={`m-3 mt-16 flex gap-4 transition-opacity duration-200 ${
           wallet?.adapter.connected ? "" : "opacity-0"
         }`}
       >
         {assets.length &&
           assets.map((asset) => (
             <div
-              className="bg-primary-light rounded-lg text-white"
+              className="bg-primary-light mb-4 rounded-lg text-white"
               key={asset.account}
             >
               <img
                 src={asset.metadata.data.image}
-                className="max-h-72 rounded-t-lg"
+                className="w-full rounded-t-lg"
               ></img>
               <div className="p-2">{asset.metadata.data.name}</div>
             </div>
           ))}
-      </div>
+      </Masonry>
     </div>
   );
 };

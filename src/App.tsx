@@ -4,7 +4,7 @@ import Router from "./Router";
 
 function App() {
   return (
-    <div className="bg-primary-dark min-h-screen w-screen font-mono font-bold">
+    <div className="bg-primary-dark min-h-screen w-full font-mono font-bold">
       <div className="fixed z-30 h-16 w-full items-center">
         <Link href="/">
           <div className="from-primary-accent absolute top-0 left-0 m-2 flex h-12 w-12 cursor-pointer rounded-xl bg-gradient-to-tr text-white">
