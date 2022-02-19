@@ -52,10 +52,6 @@ const Solana = () => {
 
   const retrieveWalletTokens = useCallback(async () => {
     if (!publicKey) throw new WalletNotConnectedError();
-    // let all_accounts = await connection.getAccountInfo(publicKey)
-    // // This is my SAMO public account balance and address (https://solscan.io/address/ChvvafF1aLeGzBPGr6VKbtcw6fFE1iUYdSoZr6R4oUyD)
-    // let samo_balance = await connection.getTokenAccountBalance(new PublicKey("ChvvafF1aLeGzBPGr6VKbtcw6fFE1iUYdSoZr6R4oUyD"))
-    // This uses my public SOL address and the SAMO mint account address (https://explorer.solana.com/address/7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU)
     let key = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
     let accounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
       programId: key,
@@ -78,12 +74,12 @@ const Solana = () => {
 
   useEffect(() => {
     if (wallet?.adapter.connected) {
-      walletRef.current?.classList.replace("-translate-y-1/2", "top-0");
+      walletRef.current?.classList.replace("md:-translate-y-1/2", "md:top-0");
       retrieveWalletTokens();
-      walletRef.current?.classList.remove("top-1/2");
+      walletRef.current?.classList.remove("md:top-1/2");
     } else {
-      walletRef.current?.classList.replace("top-0", "-translate-y-1/2");
-      walletRef.current?.classList.add("top-1/2");
+      walletRef.current?.classList.replace("md:top-0", "md:-translate-y-1/2");
+      walletRef.current?.classList.add("md:top-1/2");
     }
 
     setTimeout(() => {
@@ -95,9 +91,9 @@ const Solana = () => {
     <div className="flex w-full flex-col content-center">
       <div
         ref={walletRef}
-        className={`absolute left-1/2 top-1/2 z-30 flex w-4/5 -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-lg p-2 transition-all duration-200 md:w-1/3`}
+        className={`z-30 flex w-full flex-col gap-2 rounded-lg p-2 transition-all duration-200 md:absolute md:left-1/2 md:top-1/2 md:w-2/3 md:-translate-x-1/2 md:-translate-y-1/2`}
       >
-        <div className="flex flex-col gap-2 md:flex-row">
+        <div className="flex w-full flex-col gap-2 md:flex-row">
           <WalletMultiButton>
             {publicKey
               ? `${publicKey.toBase58().substring(0, 4)}...${publicKey
@@ -114,12 +110,18 @@ const Solana = () => {
         </div>
       </div>
       <Masonry
-        breakpointCols={6}
-        className={`m-3 mt-16 flex gap-4 transition-opacity duration-200 ${
+        breakpointCols={{
+          default: 5,
+          1400: 4,
+          1100: 3,
+          700: 2,
+          500: 1,
+        }}
+        className={`m-3 flex gap-4 transition-opacity duration-200 md:mt-16 ${
           wallet?.adapter.connected ? "" : "opacity-0"
         }`}
       >
-        {assets.length &&
+        {assets.length ? (
           assets.map((asset) => (
             <div
               className="bg-primary-light mb-4 rounded-lg text-white"
@@ -131,7 +133,12 @@ const Solana = () => {
               ></img>
               <div className="p-2">{asset.metadata.data.name}</div>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className="bg-primary-light mb-4 rounded-lg text-white">
+            Couldn't find any NFTs in your account
+          </div>
+        )}
       </Masonry>
     </div>
   );
