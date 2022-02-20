@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { LoadingContainer } from ".";
 
 interface TokenInfo {
   name: string;
@@ -24,7 +25,7 @@ interface PropTypes {
 }
 
 export const NFTCard = ({ mint }: PropTypes) => {
-  const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<TokenAccount | null>(null);
 
   const getNFTData = useCallback(() => {
@@ -34,20 +35,24 @@ export const NFTCard = ({ mint }: PropTypes) => {
   }, [mint]);
 
   useEffect(() => {
-    setLoaded(false);
+    setLoading(true);
     getNFTData().then((tokenAccount: TokenAccount) => {
       setToken(tokenAccount);
-      setLoaded(true);
+      setLoading(false);
     });
   }, []);
 
-  return token ? (
-    <div className="bg-primary-light mb-4 rounded-lg text-white" key={mint}>
-      <img
-        src={token.metadata.data.image}
-        className="w-full rounded-t-lg"
-      ></img>
-      <div className="p-2">{token.metadata.data.name}</div>
-    </div>
-  ) : null;
+  return (
+    <LoadingContainer loading={loading}>
+      {token ? (
+        <div className="bg-primary-light mb-4 rounded-lg text-white" key={mint}>
+          <img
+            src={token.metadata.data.image}
+            className="w-full rounded-t-lg"
+          ></img>
+          <div className="p-2">{token.metadata.data.name}</div>
+        </div>
+      ) : null}
+    </LoadingContainer>
+  );
 };

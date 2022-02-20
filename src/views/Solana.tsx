@@ -6,7 +6,7 @@ import {
 } from "@solana/wallet-adapter-react-ui";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button, NFTCard } from "../components";
+import { Button, LoadingContainer, NFTCard } from "../components";
 import Masonry from "react-masonry-css";
 
 const Solana = () => {
@@ -32,6 +32,7 @@ const Solana = () => {
       .map((a) => a.account.data.parsed.info.mint);
 
     setNFTMints(nftMints);
+    setLoadingMints(false);
   }, [publicKey, connection]);
 
   useEffect(() => {
@@ -60,26 +61,30 @@ const Solana = () => {
           {wallet?.adapter.connected ? <WalletDisconnectButton /> : null}
         </div>
       </div>
-      <Masonry
-        breakpointCols={{
-          default: 5,
-          1400: 4,
-          1100: 3,
-          700: 2,
-          500: 1,
-        }}
-        className={`m-3 flex gap-4 transition-opacity duration-200 md:mt-16 ${
-          wallet?.adapter.connected ? "" : "opacity-0"
-        }`}
-      >
-        {NFTMints?.length ? (
-          NFTMints.map((mint) => <NFTCard key={mint} mint={mint} />)
-        ) : (
-          <div className="bg-primary-light mb-4 rounded-lg text-white">
-            Couldn't find any NFTs in your account
-          </div>
-        )}
-      </Masonry>
+      {wallet?.adapter.connected ? (
+        <LoadingContainer loading={loadingMints}>
+          <Masonry
+            breakpointCols={{
+              default: 5,
+              1400: 4,
+              1100: 3,
+              700: 2,
+              500: 1,
+            }}
+            className={`m-3 flex gap-4 transition-opacity duration-200 md:mt-16 ${
+              wallet?.adapter.connected ? "" : "opacity-0"
+            }`}
+          >
+            {NFTMints?.length ? (
+              NFTMints.map((mint) => <NFTCard key={mint} mint={mint} />)
+            ) : (
+              <div className="bg-primary-light mb-4 rounded-lg text-white">
+                Couldn't find any NFTs in your account
+              </div>
+            )}
+          </Masonry>
+        </LoadingContainer>
+      ) : null}
     </div>
   );
 };
