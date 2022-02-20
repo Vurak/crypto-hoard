@@ -18,7 +18,7 @@
 } */
 
 .wallet-adapter-button.wallet-adapter-button-trigger {
-  @apply from-primary-light hover:bg-primary-accent w-full justify-center rounded-lg bg-gradient-to-tr to-transparent p-2 font-mono font-bold text-white duration-150;
+  @apply from-primary-light hover:bg-primary-accent font-primary w-full justify-center rounded-lg bg-gradient-to-tr to-transparent p-2 font-bold text-white duration-150;
 }
 
 .wallet-adapter-button-trigger {

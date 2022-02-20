@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Route, Switch } from "wouter";
 import { Landing } from "./views";
+
 const Solana = lazy(() => import("./views/Solana"));
 const SolanaWallet = lazy(() => import("./components/solana/Wallet"));
 

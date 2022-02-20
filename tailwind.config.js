@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        display: ['Trade Winds']
+        primary: ['Saira']
       },
       padding: {
         '1/3': '33.33%',

@@ -94,19 +94,8 @@ const Solana = () => {
         className={`z-30 flex w-full flex-col gap-2 rounded-lg p-2 transition-all duration-200 md:absolute md:left-1/2 md:top-1/2 md:w-2/3 md:-translate-x-1/2 md:-translate-y-1/2`}
       >
         <div className="flex w-full flex-col gap-2 md:flex-row">
-          <WalletMultiButton>
-            {publicKey
-              ? `${publicKey.toBase58().substring(0, 4)}...${publicKey
-                  .toBase58()
-                  .substring(
-                    publicKey.toBase58().length - 4,
-                    publicKey.toBase58().length
-                  )}`
-              : "CONNECT WALLET"}
-          </WalletMultiButton>
-          {wallet?.adapter.connected ? (
-            <WalletDisconnectButton>DISCONNECT WALLET</WalletDisconnectButton>
-          ) : null}
+          <WalletMultiButton />
+          {wallet?.adapter.connected ? <WalletDisconnectButton /> : null}
         </div>
       </div>
       <Masonry

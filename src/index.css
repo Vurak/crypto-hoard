@@ -7,4 +7,16 @@
     font-family: Trade Winds;
     src: url(./assets/fonts/TradeWinds-Regular.ttf);
   }
+  @font-face {
+    font-family: Poppins;
+    src: url(./assets/fonts/Poppins-Regular.ttf);
+  }
+  @font-face {
+    font-family: ChakraPetch;
+    src: url(./assets/fonts/ChakraPetch-Regular.ttf);
+  }
+  @font-face {
+    font-family: Saira;
+    src: url(./assets/fonts/Saira.ttf);
+  }
 }
