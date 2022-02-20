@@ -2,7 +2,7 @@
   "name": "crypto-hoard",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://vurak.github.io/crypto-hoard/",
+  "homepage": "https://www.crypto-hoards.com/",
   "dependencies": {
     "@solana/wallet-adapter-base": "^0.9.3",
     "@solana/wallet-adapter-react": "^0.15.3",
