@@ -6,49 +6,17 @@ import {
 } from "@solana/wallet-adapter-react-ui";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "../components";
+import { Button, NFTCard } from "../components";
 import Masonry from "react-masonry-css";
-
-interface TokenInfo {
-  name: string;
-  symbol: string;
-  decimals: number;
-  tokenAuthority: string;
-  supply: string | number;
-  type: "nft";
-}
-interface TokenAccount {
-  lamports: number;
-  ownerProgram: string;
-  type: "token_account";
-  rentEpoch: number;
-  account: string;
-  tokenInfo: TokenInfo;
-  metadata?: any;
-  onchainMetadata?: any;
-}
 
 const Solana = () => {
   const { connection } = useConnection();
   const { publicKey, wallet } = useWallet();
 
   const walletRef = useRef<HTMLDivElement>(null);
-
-  const [assets, setAssets] = useState<TokenAccount[]>([]);
+  const [loadingMints, setLoadingMints] = useState(true);
+  const [NFTMints, setNFTMints] = useState<string[] | null>(null);
   const [showAssets, setShowAssets] = useState<boolean>(false);
-
-  const getAirdrop = useCallback(async () => {
-    if (!publicKey) throw new WalletNotConnectedError();
-    try {
-      var airdropSignature = await connection.requestAirdrop(
-        publicKey,
-        LAMPORTS_PER_SOL
-      );
-      await connection.confirmTransaction(airdropSignature);
-    } catch (error) {
-      console.log({ title: "Airdrop failed", description: error });
-    }
-  }, []);
 
   const retrieveWalletTokens = useCallback(async () => {
     if (!publicKey) throw new WalletNotConnectedError();
@@ -56,20 +24,14 @@ const Solana = () => {
     let accounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
       programId: key,
     });
-    // new PublicKey(account.data.parsed.info.mint)
-    const details = await Promise.all(
-      accounts.value.map((value) =>
-        fetch(
-          `https://public-api.solscan.io/account/${value.account.data.parsed.info.mint}`
-        ).then((res) => res.json())
-      )
-    ).then((tokens: TokenAccount[]) => {
-      setAssets(
-        tokens.filter((token: TokenAccount) => token.tokenInfo.type == "nft")
-      );
-    });
+    const nftMints = accounts.value
+      .filter((a) => {
+        const tokenAmount = a.account.data.parsed.info.tokenAmount;
+        return tokenAmount.decimals === 0 && tokenAmount.amount == "1";
+      })
+      .map((a) => a.account.data.parsed.info.mint);
 
-    console.log(details);
+    setNFTMints(nftMints);
   }, [publicKey, connection]);
 
   useEffect(() => {
@@ -110,19 +72,8 @@ const Solana = () => {
           wallet?.adapter.connected ? "" : "opacity-0"
         }`}
       >
-        {assets.length ? (
-          assets.map((asset) => (
-            <div
-              className="bg-primary-light mb-4 rounded-lg text-white"
-              key={asset.account}
-            >
-              <img
-                src={asset.metadata.data.image}
-                className="w-full rounded-t-lg"
-              ></img>
-              <div className="p-2">{asset.metadata.data.name}</div>
-            </div>
-          ))
+        {NFTMints?.length ? (
+          NFTMints.map((mint) => <NFTCard key={mint} mint={mint} />)
         ) : (
           <div className="bg-primary-light mb-4 rounded-lg text-white">
             Couldn't find any NFTs in your account
