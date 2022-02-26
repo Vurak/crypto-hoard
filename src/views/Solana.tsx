@@ -6,7 +6,7 @@ import {
 } from "@solana/wallet-adapter-react-ui";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button, LoadingContainer, NFTCard } from "../components";
+import { Button, Input, LoadingContainer, NFTCard } from "../components";
 import Masonry from "react-masonry-css";
 
 const Solana = () => {
@@ -17,6 +17,7 @@ const Solana = () => {
   const [loadingMints, setLoadingMints] = useState(true);
   const [NFTMints, setNFTMints] = useState<string[] | null>(null);
   const [showAssets, setShowAssets] = useState<boolean>(false);
+  // const [inputPublicKey, setInputPublicKey] = useState<string>("");
 
   const retrieveWalletTokens = useCallback(async () => {
     if (!publicKey) throw new WalletNotConnectedError();
@@ -38,8 +39,8 @@ const Solana = () => {
   useEffect(() => {
     if (wallet?.adapter.connected) {
       walletRef.current?.classList.replace("md:-translate-y-1/2", "md:top-0");
-      retrieveWalletTokens();
       walletRef.current?.classList.remove("md:top-1/2");
+      retrieveWalletTokens();
     } else {
       walletRef.current?.classList.replace("md:top-0", "md:-translate-y-1/2");
       walletRef.current?.classList.add("md:top-1/2");
@@ -60,6 +61,17 @@ const Solana = () => {
           <WalletMultiButton />
           {wallet?.adapter.connected ? <WalletDisconnectButton /> : null}
         </div>
+        {/* {!wallet?.adapter.connected ? (
+          <div className="flex w-full flex-col gap-2 md:flex-row">
+            <Input
+              className="text-center"
+              onChange={(e) => setInputPublicKey(e.target.value)}
+              value={inputPublicKey}
+              placeholder="or enter wallet address"
+            />
+            <Button onClick={() => {}}>Submit</Button>
+          </div>
+        ) : null} */}
       </div>
       {wallet?.adapter.connected ? (
         <LoadingContainer loading={loadingMints}>
