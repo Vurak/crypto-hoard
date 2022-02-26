@@ -3,6 +3,7 @@ import { useLocation } from "wouter"
 import "./App.css"
 import Wouter from "./Wouter"
 import { DropdownMenu } from "./components/home/DropdownMenu"
+import { Transition } from "@headlessui/react"
 
 function App() {
   const [location, setLocation] = useLocation()
@@ -64,7 +65,17 @@ function App() {
             </svg>
           </div>
         </div>
-        {menuActive ? <DropdownMenu /> : null}
+        <Transition
+          show={menuActive}
+          enter="transition-opacity duration-100"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-150"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <DropdownMenu />
+        </Transition>
       </div>
       <div className="relative flex min-h-screen w-full">
         <Wouter />
