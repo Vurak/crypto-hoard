@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { AsyncImage, LoadingContainer } from "."
+import { useAsyncImage } from "../hooks"
 
 interface TokenInfo {
   name: string
@@ -28,8 +29,10 @@ export const NFTCard = ({ mint }: PropTypes) => {
   const [loading, setLoading] = useState(true)
   const [token, setToken] = useState<TokenAccount | null>(null)
 
+  const image = useAsyncImage(token?.metadata.data.image)
+
   const getNFTData = useCallback(() => {
-    return fetch(`https://public-api.solscan.io/account/${mint}`).then(res =>
+    return fetch(`https://public-api.solscan.io/account/${mint}`).then((res) =>
       res.json()
     )
   }, [mint])
@@ -43,13 +46,10 @@ export const NFTCard = ({ mint }: PropTypes) => {
   }, [])
 
   return (
-    <LoadingContainer loading={loading}>
-      {token ? (
-        <div className="bg-primary-light mb-4 rounded-lg text-white" key={mint}>
-          <AsyncImage
-            src={token.metadata.data.image}
-            className="w-full rounded-t-lg"
-          ></AsyncImage>
+    <LoadingContainer loading={loading || !image}>
+      {token && image ? (
+        <div className="mb-4 rounded-lg bg-primary-light text-white" key={mint}>
+          <img src={image} className="w-full rounded-t-lg" />
           <div className="p-2">{token.metadata.data.name}</div>
         </div>
       ) : null}
