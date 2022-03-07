@@ -43,13 +43,17 @@ export const NFTCard = ({ mint }: PropTypes) => {
       setToken(tokenAccount)
       setLoading(false)
     })
-  }, [])
+  }, [getNFTData])
 
   return (
     <LoadingContainer loading={loading || !image}>
       {token && image ? (
         <div className="mb-4 rounded-lg bg-primary-light text-white" key={mint}>
-          <img src={image} className="w-full rounded-t-lg" />
+          <img
+            src={image}
+            alt={token.metadata.data.name}
+            className="w-full rounded-t-lg"
+          />
           <div className="p-2">{token.metadata.data.name}</div>
         </div>
       ) : null}
