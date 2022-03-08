@@ -4,10 +4,12 @@ import "./App.css"
 import Wouter from "./Wouter"
 import { DropdownMenu } from "./components/home/DropdownMenu"
 import { Transition } from "@headlessui/react"
+import { AboutPanel } from "./components/AboutPanel"
 
 function App() {
   const [location, setLocation] = useLocation()
   const [menuActive, setMenuActive] = useState(false)
+  const [aboutAcitve, setAboutActive] = useState(false)
 
   const handleMenuClick = () => {
     setMenuActive(c => !c)
@@ -17,15 +19,25 @@ function App() {
     if (menuActive) setMenuActive(false)
   }
 
+  const handleMenuClicks = (menu: string) => {
+    switch (menu) {
+      case "about":
+        setAboutActive(true)
+        break
+      default:
+        break
+    }
+  }
+
   return (
     <div
       onClick={handleDocumentClick}
-      className="bg-primary-dark font-primary min-h-screen w-full font-bold"
+      className="min-h-screen w-full bg-primary-dark font-primary font-bold text-white"
     >
       <div className="fixed z-30 hidden h-0 w-full items-center md:block md:h-16">
         <div
           onClick={() => setLocation("/")}
-          className="from-primary-accent absolute top-0 left-0 m-2 flex h-12 cursor-pointer rounded-xl bg-gradient-to-tr text-white"
+          className="absolute top-0 left-0 m-2 flex h-12 cursor-pointer rounded-xl bg-gradient-to-tr from-primary-accent text-white"
         >
           <div className="m-auto mx-3 flex">
             <svg
@@ -46,7 +58,7 @@ function App() {
         </div>
         <div
           onClick={handleMenuClick}
-          className="from-primary-accent absolute top-0 right-0 z-50 m-2 flex h-12 cursor-pointer rounded-xl bg-gradient-to-tr text-white"
+          className="absolute top-0 right-0 z-50 m-2 flex h-12 cursor-pointer rounded-xl bg-gradient-to-tr from-primary-accent"
         >
           <div className="m-auto mx-3 flex">
             <svg
@@ -74,12 +86,17 @@ function App() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <DropdownMenu />
+          <DropdownMenu onOptionClick={handleMenuClicks} />
         </Transition>
       </div>
       <div className="relative flex min-h-screen w-full">
         <Wouter />
       </div>
+      {aboutAcitve && (
+        <div className="fixed top-0 z-50 flex min-h-screen w-full">
+          <AboutPanel />
+        </div>
+      )}
     </div>
   )
 }
