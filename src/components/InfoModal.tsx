@@ -22,7 +22,7 @@ export const InfoModal = ({ title, active, setActive, children }: Props) => {
       <div className="fixed inset-0">
         <div className="fixed inset-0 bg-black opacity-50" />
         <div className="fixed right-0 h-full w-full p-4 shadow-lg">
-          <div className="relative top-1/2 m-4 mx-auto max-h-screen -translate-y-1/2 overflow-y-scroll rounded-md bg-primary-light p-5 text-white sm:w-4/5 md:w-2/3 lg:w-1/3">
+          <div className="relative top-1/2 m-4 mx-auto max-h-screen -translate-y-1/2 overflow-y-auto rounded-md bg-primary-light p-5 text-white sm:w-4/5 md:w-2/3 lg:w-1/3">
             <div className="mb-4 flex h-9 w-full text-xl font-bold">
               {title}
               <svg

@@ -10,6 +10,7 @@ function App() {
   const [location, setLocation] = useLocation()
   const [menuActive, setMenuActive] = useState(false)
   const [aboutAcitve, setAboutActive] = useState(false)
+  const [feedbackActive, setFeedbackActive] = useState(false)
 
   const handleMenuClick = () => {
     setMenuActive(c => !c)
@@ -17,13 +18,17 @@ function App() {
 
   const handleDocumentClick = () => {
     if (menuActive) setMenuActive(false)
-    if (aboutAcitve) setAboutActive(false)
   }
 
   const handleMenuClicks = (menu: string) => {
     switch (menu) {
       case "about":
         setAboutActive(true)
+        setFeedbackActive(false)
+        break
+      case "feedback":
+        setAboutActive(false)
+        setFeedbackActive(true)
         break
       default:
         break
@@ -102,13 +107,33 @@ function App() {
           your solana wallet and display your media NFTs.
         </p>
         <p className="pt-2">
-          It was developed by Surak, code available on{" "}
+          Developed by Surak, code available on{" "}
           <a
             className="underline"
+            target="_blank"
             href="https://github.com/Vurak/crypto-hoards"
           >
             GitHub
           </a>
+          .
+        </p>
+      </InfoModal>
+      <InfoModal
+        title="Feedback"
+        active={feedbackActive}
+        setActive={setFeedbackActive}
+      >
+        <p>
+          If you encounter any issues or would like to see features added, feel
+          free to create a new issue for it{" "}
+          <a
+            className="underline"
+            target="_blank"
+            href="https://github.com/Vurak/crypto-hoards/issues"
+          >
+            here
+          </a>
+          .
         </p>
       </InfoModal>
     </>
