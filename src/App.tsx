@@ -4,7 +4,7 @@ import "./App.css"
 import Wouter from "./Wouter"
 import { DropdownMenu } from "./components/home/DropdownMenu"
 import { Transition } from "@headlessui/react"
-import { AboutPanel } from "./components/AboutPanel"
+import { InfoModal } from "./components"
 
 function App() {
   const [location, setLocation] = useLocation()
@@ -95,22 +95,22 @@ function App() {
           <Wouter />
         </div>
       </div>
-      <Transition
-        show={aboutAcitve}
-        enter="transition-opacity duration-500"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-500"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <div className="fixed inset-0">
-          <div className="fixed inset-0 bg-black opacity-50" />
-          <div className="fixed right-0 h-full w-full p-4 shadow-lg">
-            <AboutPanel />
-          </div>
-        </div>
-      </Transition>
+
+      <InfoModal title="About" active={aboutAcitve} setActive={setAboutActive}>
+        <p>
+          Crypto Hoards is a Solana Web3 enabled web app that can connect to
+          your solana wallet and display your media NFTs.
+        </p>
+        <p className="pt-2">
+          It was developed by Surak, code available on{" "}
+          <a
+            className="underline"
+            href="https://github.com/Vurak/crypto-hoards"
+          >
+            GitHub
+          </a>
+        </p>
+      </InfoModal>
     </>
   )
 }
