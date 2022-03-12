@@ -1,6 +1,4 @@
-import { useState, default as React } from "react"
-import { Link } from "wouter"
-import { AboutPanel } from "../AboutPanel"
+import { default as React } from "react"
 
 interface MenuProps {
   onOptionClick: (menu: string) => void
