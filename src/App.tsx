@@ -41,10 +41,10 @@ function App() {
         onClick={handleDocumentClick}
         className="min-h-screen w-full bg-primary-dark font-primary font-bold text-white"
       >
-        <div className="fixed z-30 hidden h-0 w-full items-center md:block md:h-16">
+        <div className="pointer-events-none fixed z-30 hidden h-0 w-full items-center md:block md:h-16 ">
           <div
             onClick={() => setLocation("/")}
-            className="absolute top-0 left-0 m-2 flex h-12 cursor-pointer rounded-xl bg-gradient-to-tr from-primary-accent text-white"
+            className="pointer-events-auto absolute top-0 left-0 m-2 flex h-12 cursor-pointer rounded-xl bg-gradient-to-tr from-primary-accent text-white"
           >
             <div className="m-auto mx-3 flex">
               <svg
@@ -65,7 +65,7 @@ function App() {
           </div>
           <div
             onClick={handleMenuClick}
-            className="absolute top-0 right-0 z-50 m-2 flex h-12 cursor-pointer rounded-xl bg-gradient-to-tr from-primary-accent"
+            className="pointer-events-auto absolute top-0 right-0 z-50 m-2 flex h-12 cursor-pointer rounded-xl bg-gradient-to-tr from-primary-accent"
           >
             <div className="m-auto mx-3 flex">
               <svg
@@ -92,6 +92,7 @@ function App() {
             leave="transition-opacity duration-150"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
+            className="pointer-events-auto"
           >
             <DropdownMenu onOptionClick={handleMenuClicks} />
           </Transition>
